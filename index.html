@@ -687,10 +687,10 @@ class MEXEnergyOptimizer:
     
     def calculate_revenue(self, excess_energy, market_price):
         # Cálculo de receita com venda de excedente
-        return excess_energy * market_price * 0.99  # 1% taxa MEX DAO
+        return excess_energy * market_price * 0.99  # 1% taxa MEXX DAO
     
     def distribute_crypto_rewards(self, installations, total_revenue):
-        # Distribuição automática de recompensas em MEX tokens
+        # Distribuição automática de recompensas em MEXX tokens
         rewards = {}
         for installation in installations:
             contribution = installation['generation'] / sum(i['generation'] for i in installations)
@@ -718,7 +718,7 @@ print(f"Otimização: {optimization}")
         <div class="container">
             <h3>MEX Energy DAO - Mauá Solar 2025-2033</h3>
             <p>Transformando Mauá em referência nacional de sustentabilidade energética</p>
-            <p>Produção Owner: Zeh Sobrinho | Sênior Full Stack DevOp: Manus</p>
+            <p>Produção Owner: MEX Energia | Gang of Seven Senior Scrum teamp: GOS3</p>
         </div>
     </footer>
 
