@@ -1,1023 +1,1656 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MEX Energy DAO - Mauá Solar 2025-2033</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://d3js.org/d3.v7.min.js"></script>
-<style>
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEX Energy DAO - Mauá Solar 2025-2033</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <title>Consórcio MEX Energia</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+@@ -14,1011 +14,764 @@
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e1a;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        /* Header Fixo */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(26, 31, 46, 0.8) 0%, rgba(45, 55, 72, 0.8) 100%);
+            border-bottom: 2px solid #4299e1;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(66, 153, 225, 0.2);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            padding: 2rem 0;
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #4299e1;
+            margin-right: 40px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+            align-items: center;
+        }
+
+        .location-selector {
+            display: flex;
+            gap: 10px;
+            margin: 0 20px;
+        }
+
+        .location-select {
+            background: rgba(45, 55, 72, 0.8);
+            border: 1px solid #4a5568;
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            min-width: 140px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .location-select:hover {
+            border-color: #4299e1;
+            background: rgba(66, 153, 225, 0.1);
+        }
+
+        .location-select:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.2);
+        }
+
+        .location-select option {
+            background: #2d3748;
+            color: #ffffff;
+        }
+
+        .nav-item {
+            position: relative;
+            overflow: hidden;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(66, 153, 225, 0.2);
+            color: #4299e1;
+        }
+
+        .header::before {
+            content: '';
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 0;
+            top: 100%;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/><path d="M20 50 Q50 20 80 50 Q50 80 20 50" fill="rgba(255,255,255,0.05)"/></svg>') repeat;
+            opacity: 0.1;
+            margin-top: 10px;
+            background: linear-gradient(135deg, rgba(26, 31, 46, 0.9) 0%, rgba(45, 55, 72, 0.9) 100%);
+            border: 1px solid #4a5568;
+            border-radius: 8px;
+            padding: 10px;
+            min-width: 280px;
+            z-index: 1002;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        .nav-item:hover > .submenu {
+            display: block;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        .submenu a {
+            display: block;
+            color: #cbd5e0;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: all 0.2s ease-in-out;
+            white-space: nowrap;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        .submenu a:hover {
+            background: rgba(66, 153, 225, 0.2);
+            color: #4299e1;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        /* Sidebar Fixa */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 80px;
+            width: 280px;
+            height: calc(100vh - 80px);
+            background: linear-gradient(180deg, #1a202c 0%, #2d3748 100%);
+            border-right: 1px solid #4a5568;
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 900;
+        }
+
+        .kpi-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .filter-section {
+            margin-bottom: 30px;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(249, 115, 22, 0.2);
+        .filter-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #cbd5e0;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .filter-btn {
+            background: rgba(74, 85, 104, 0.3);
+            border: 1px solid rgba(74, 85, 104, 0.5);
+            color: #cbd5e0;
+            padding: 10px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            font-weight: 500;
+            text-align: left;
+        }
+
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+        .filter-btn:hover {
+            background: rgba(66, 153, 225, 0.2);
+            border-color: #4299e1;
+            color: #4299e1;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+            border-color: #4299e1;
+            color: white;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+        }
+
+        .kpi-label {
+            font-size: 1rem;
+            opacity: 0.8;
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            margin-top: 80px;
+            padding: 20px;
+            min-height: calc(100vh - 80px);
+        }
+
+        .section {
+            margin: 4rem 0;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        .content-header {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+        .content-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: #ffffff;
+        }
+
+        .treemap-container {
+            width: 100%;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            margin: 2rem 0;
+            overflow: hidden;
+        .content-subtitle {
+            font-size: 14px;
+            color: #a0aec0;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        .metrics-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .crypto-card {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+        .metric-card {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            border: 1px solid #4a5568;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .crypto-card:hover {
+            border-color: #f97316;
+            transform: translateX(5px);
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(66, 153, 225, 0.2);
+            border-color: #4299e1;
+        }
+
+        .crypto-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #4299e1;
+            margin-bottom: 5px;
+        }
+
+        .crypto-address {
+            font-family: 'Courier New', monospace;
+            background: rgba(249, 115, 22, 0.1);
+            padding: 0.5rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #f97316;
+        .metric-label {
+            font-size: 12px;
+            color: #a0aec0;
+        }
+
+        .phases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        /* Treemap Container */
+        .treemap-container {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            border: 1px solid #4a5568;
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 600px;
+        }
+
+        .phase-card {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+        .treemap-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #4a5568;
+        }
+
+        .phase-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f97316;
+            margin-bottom: 1rem;
+        .treemap-rect {
+            stroke: #2d3748;
+            stroke-width: 2;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .phase-metric {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        .treemap-rect:hover {
+            stroke: #4299e1;
+            stroke-width: 3;
+            filter: brightness(1.2);
+        }
+
+        .algorithm-panel {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border: 2px solid #f97316;
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        .treemap-text, .treemap-value {
+            pointer-events: none;
+            font-family: inherit;
+            fill: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+        
+        .treemap-text { font-weight: 600; }
+        .treemap-value { font-weight: 700; }
+
+        .code-block {
+            background: #000;
+        /* Tooltip */
+        .tooltip {
+            position: absolute;
+            background: rgba(26, 32, 44, 0.95);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-size: 13px;
+            pointer-events: none;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border: 1px solid #4a5568;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            max-width: 280px;
+            display: none; /* Hidden by default */
+        }
+        
+        .legend {
+            background: rgba(45, 55, 72, 0.5);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .code-block code {
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        .legend-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #cbd5e0;
+        }
+
+        .nav-tabs {
+        .legend-item {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            align-items: center;
+            font-size: 12px;
+            color: #a0aec0;
+        }
+
+        .nav-tab {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            margin-right: 8px;
+        }
+
+        .nav-tab.active {
+            color: #f97316;
+            border-bottom-color: #f97316;
+        /* Loading Spinner */
+        .loading {
+            display: flex; justify-content: center; align-items: center;
+            height: 400px; font-size: 16px; color: #a0aec0;
+        }
+
+        .nav-tab:hover {
+            color: #f97316;
+        .loading::after {
+            content: ''; width: 20px; height: 20px;
+            border: 2px solid #4a5568; border-top-color: #4299e1;
+            border-radius: 50%; animation: spin 1s linear infinite; margin-left: 10px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .tab-content {
+            display: none;
+        /* Estilos do Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        .modal-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 3rem 0;
+            border-top: 1px solid rgba(249, 115, 22, 0.3);
+            text-align: center;
+        .modal-content {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #4a5568;
+            width: 100%;
+            max-width: 450px;
+            margin: 20px;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        .modal-overlay.visible .modal-content {
+            transform: scale(1);
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        .modal-header { padding: 20px; border-bottom: 1px solid #4a5568; }
+        .modal-header h3 { font-size: 18px; font-weight: 600; color: #ffffff; }
+        .modal-body { padding: 20px; font-size: 14px; color: #cbd5e0; }
+        .modal-domain {
+            margin-top: 8px; font-weight: 500; color: #4299e1;
+            background: rgba(66, 153, 225, 0.1); padding: 8px 12px;
+            border-radius: 6px; word-break: break-all;
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        .modal-footer {
+            padding: 20px; display: flex; justify-content: flex-end; gap: 12px;
+            background: rgba(26, 32, 44, 0.5); border-top: 1px solid #4a5568;
+            border-radius: 0 0 12px 12px;
+        }
+
+        .floating-element {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(249, 115, 22, 0.1) 0%, transparent 70%);
+            animation: float 20s infinite linear;
+        .modal-btn-primary, .modal-btn-secondary {
+            padding: 10px 20px; border-radius: 6px; font-size: 14px;
+            font-weight: 500; cursor: pointer; transition: all 0.2s ease;
+            border: none; text-decoration: none; display: inline-block; text-align: center;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+            color: white; box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+        }
+        .modal-btn-primary:hover { filter: brightness(1.1); }
+        .modal-btn-secondary { background: #4a5568; color: #cbd5e0; }
+        .modal-btn-secondary:hover { background: #718096; }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            pointer-events: none;
+            z-index: 1000;
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .header { padding: 0 15px; }
+            .nav-menu { display: none; }
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "d3": "https://aistudiocdn.com/d3@^7.9.0"
+  }
 }
-code
-Code
-body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-        color: #ffffff;
-        line-height: 1.6;
-    }
-
-    .container {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 0 20px;
-    }
-
-    .header {
-        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-        padding: 2rem 0;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .header::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/><path d="M20 50 Q50 20 80 50 Q50 80 20 50" fill="rgba(255,255,255,0.05)"/></svg>') repeat;
-        opacity: 0.1;
-    }
-
-    .header-content {
-        position: relative;
-        z-index: 1;
-    }
-
-    .header h1 {
-        font-size: 3rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
-
-    .header p {
-        font-size: 1.2rem;
-        opacity: 0.9;
-        margin-bottom: 1rem;
-    }
-
-    .kpi-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
-        margin: 2rem 0;
-    }
-
-    .kpi-card {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 16px;
-        padding: 2rem;
-        text-align: center;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .kpi-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 40px rgba(249, 115, 22, 0.2);
-    }
-
-    .kpi-value {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: white;
-        margin-bottom: 0.5rem;
-    }
-
-    .kpi-label {
-        font-size: 1rem;
-        opacity: 0.8;
-    }
-
-    .section {
-        margin: 4rem 0;
-        padding: 3rem 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .section-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 2rem;
-        text-align: center;
-        background: linear-gradient(135deg, #f97316, #ea580c);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .treemap-container {
-        width: 100%;
-        height: 600px;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 16px;
-        margin: 2rem 0;
-        overflow: hidden;
-    }
-
-    .chart-container {
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 16px;
-        padding: 2rem;
-        margin: 2rem 0;
-    }
-
-    .crypto-card {
-        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-        border: 1px solid rgba(249, 115, 22, 0.3);
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin: 1rem 0;
-        transition: all 0.3s ease;
-    }
-
-    .crypto-card:hover {
-        border-color: #f97316;
-        transform: translateX(5px);
-    }
-
-    .crypto-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-    }
-
-    .crypto-address {
-        font-family: 'Courier New', monospace;
-        background: rgba(249, 115, 22, 0.1);
-        padding: 0.5rem;
-        border-radius: 6px;
-        font-size: 0.9rem;
-        color: #f97316;
-    }
-
-    .phases-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-        gap: 2rem;
-        margin: 2rem 0;
-    }
-
-    .phase-card {
-        background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
-        border: 1px solid rgba(249, 115, 22, 0.3);
-        border-radius: 16px;
-        padding: 2rem;
-    }
-
-    .phase-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #f97316;
-        margin-bottom: 1rem;
-    }
-
-    .phase-metric {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
-        padding: 0.5rem 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .algorithm-panel {
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-        border: 2px solid #f97316;
-        border-radius: 16px;
-        padding: 2rem;
-        margin: 2rem 0;
-    }
-
-    .code-block {
-        background: #000;
-        border-radius: 8px;
-        padding: 1.5rem;
-        margin: 1rem 0;
-        overflow-x: auto;
-    }
-
-    .code-block code {
-        color: #00ff00;
-        font-family: 'Courier New', monospace;
-        font-size: 0.9rem;
-    }
-
-    .nav-tabs {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 2rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .nav-tab {
-        padding: 1rem 2rem;
-        background: none;
-        border: none;
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 1rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border-bottom: 2px solid transparent;
-    }
-
-    .nav-tab.active {
-        color: #f97316;
-        border-bottom-color: #f97316;
-    }
-
-    .nav-tab:hover {
-        color: #f97316;
-    }
-
-    .tab-content {
-        display: none;
-    }
-
-    .tab-content.active {
-        display: block;
-    }
-
-    .footer {
-        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-        padding: 3rem 0;
-        border-top: 1px solid rgba(249, 115, 22, 0.3);
-        text-align: center;
-    }
-
-    @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.7; }
-    }
-
-    .pulse {
-        animation: pulse 2s infinite;
-    }
-
-    .floating-elements {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: -1;
-    }
-
-    .floating-element {
-        position: absolute;
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(249, 115, 22, 0.1) 0%, transparent 70%);
-        animation: float 20s infinite linear;
-    }
-
-    @keyframes float {
-        0% { transform: translateY(100vh) rotate(0deg); }
-        100% { transform: translateY(-100px) rotate(360deg); }
-    }
-
-    .tooltip {
-        position: absolute;
-        background: rgba(0, 0, 0, 0.9);
-        color: white;
-        padding: 0.5rem;
-        border-radius: 4px;
-        font-size: 0.8rem;
-        pointer-events: none;
-        z-index: 1000;
-    }
-</style>
+</script>
 </head>
 <body>
-<div class="floating-elements"></div>
-code
-Code
-<header class="header">
-    <div class="container">
-        <div class="header-content">
-            <h1>🌞 MEX Energy DAO</h1>
-            <p>Programa Mauá Solar 2025-2033 | Transformação Energética Sustentável</p>
-            <div class="kpi-grid">
-                <div class="kpi-card pulse">
-                    <div class="kpi-value">1.280 MW</div>
-                    <div class="kpi-label">Capacidade Total</div>
-                </div>
-                <div class="kpi-card pulse">
-                    <div class="kpi-value">R$ 6,4 Bi</div>
-                    <div class="kpi-label">Investimento Total</div>
-                </div>
-                <div class="kpi-card pulse">
-                    <div class="kpi-value">250.000</div>
-                    <div class="kpi-label">Famílias Beneficiadas</div>
-                </div>
-                <div class="kpi-card pulse">
-                    <div class="kpi-value">30%</div>
-                    <div class="kpi-label">ROI Anual</div>
+    <div class="floating-elements"></div>
+    
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1>🌞 MEX Energy DAO</h1>
+                <p>Programa Mauá Solar 2025-2033 | Transformação Energética Sustentável</p>
+                <div class="kpi-grid">
+                    <div class="kpi-card pulse">
+                        <div class="kpi-value">1.280 MW</div>
+                        <div class="kpi-label">Capacidade Total</div>
+                    </div>
+                    <div class="kpi-card pulse">
+                        <div class="kpi-value">R$ 6,4 Bi</div>
+                        <div class="kpi-label">Investimento Total</div>
+                    </div>
+                    <div class="kpi-card pulse">
+                        <div class="kpi-value">250.000</div>
+                        <div class="kpi-label">Famílias Beneficiadas</div>
+                    </div>
+                    <div class="kpi-card pulse">
+                        <div class="kpi-value">30%</div>
+                        <div class="kpi-label">ROI Anual</div>
+                    </div>
+        <div class="logo">MEX Energia</div>
+        <nav class="nav-menu">
+            <div class="nav-item active">Dashboard</div>
+            <div class="nav-item">Dor/Oportunidade
+                <div class="submenu">
+                    <a href="https://tech.facebook.com/engineering/2021/11/open-compute-project/">Mágica 1: Facebook destrói PUE</a>
+                    <a href="https://www.facebook.com/PrinevilleDataCenter/videos/10150385588936731/">Mágica 1.1: Vídeo Prineville DC</a>
+                    <a href="https://www.ashrae.org/file%20library/technical%20resources/bookstore/ashrae_tc0909_power_white_paper_22_june_2016_revised.pdf">Mágica 2: ASHRAE eleva teto 27°C</a>
+                    <a href="https://www.vertiv.com/499702/globalassets/products/thermal-management/in-row-cooling/vertiv_ap__elevated_return_air_temperature__-_en_-_asia_302442_0.pdf">Mágica 3: Indústria se adequa</a>
+                    <a href="https://static.googleusercontent.com/media/www.google.com/pt-BR//about/datacenters/efficiency/internal/assets/machine-learning-applicationsfor-datacenter-optimization-finalv2.pdf">Mágica 4: DeepMind reduz PUE 40%</a>
+                    <a href="https://deepmind.google/discover/blog/deepmind-ai-reduces-google-data-centre-cooling-bill-by-40/">Mágica 4.0: Blog DeepMind</a>
+                    <a href="https://github.com/LaurentVeyssier/Minimize-Energy-consumption-with-Deep-Learning-model">Mágica 4.1: GitHub Minimizar Consumo</a>
+                    <a href="https://status.cloud.google.com/incidents/fmEL9i2fArADKawkZAa2/">Resiliência Climática (Google Cloud)</a>
                 </div>
             </div>
         </div>
-    </div>
-</header>
+    </header>
 
-<main class="container">
-    <div class="nav-tabs">
-        <button class="nav-tab active" onclick="showTab('overview')">Visão Geral</button>
-        <button class="nav-tab" onclick="showTab('treemap')">Instalações</button>
-        <button class="nav-tab" onclick="showTab('economics')">Análise Econômica</button>
-        <button class="nav-tab" onclick="showTab('energy')">Matriz Energética</button>
-        <button class="nav-tab" onclick="showTab('crypto')">Criptocontas</button>
-        <button class="nav-tab" onclick="showTab('algorithm')">Otimização IA</button>
-    </div>
+    <main class="container">
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('overview')">Visão Geral</button>
+            <button class="nav-tab" onclick="showTab('treemap')">Instalações</button>
+            <button class="nav-tab" onclick="showTab('economics')">Análise Econômica</button>
+            <button class="nav-tab" onclick="showTab('energy')">Matriz Energética</button>
+            <button class="nav-tab" onclick="showTab('crypto')">Criptocontas</button>
+            <button class="nav-tab" onclick="showTab('algorithm')">Otimização IA</button>
+        </div>
 
-    <div id="overview" class="tab-content active">
-        <section class="section">
-            <h2 class="section-title">Fases do Programa</h2>
-            <div class="phases-grid">
-                <div class="phase-card">
-                    <div class="phase-title">Fase 1 (2025-2027) - Piloto</div>
-                    <div class="phase-metric">
-                        <span>Capacidade:</span>
-                        <span>128 MW (10%)</span>
+        <div id="overview" class="tab-content active">
+            <section class="section">
+                <h2 class="section-title">Fases do Programa</h2>
+                <div class="phases-grid">
+                    <div class="phase-card">
+                        <div class="phase-title">Fase 1 (2025-2027) - Piloto</div>
+                        <div class="phase-metric">
+                            <span>Capacidade:</span>
+                            <span>128 MW (10%)</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Telhados:</span>
+                            <span>7.760 instalações</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Investimento:</span>
+                            <span>R$ 640 milhões</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>ROI:</span>
+                            <span>25% ao ano</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Payback:</span>
+                            <span>4 anos</span>
+                        </div>
                     </div>
-                    <div class="phase-metric">
-                        <span>Telhados:</span>
-                        <span>7.760 instalações</span>
+                    
+                    <div class="phase-card">
+                        <div class="phase-title">Fase 2 (2027-2030) - Expansão</div>
+                        <div class="phase-metric">
+                            <span>Capacidade:</span>
+                            <span>640 MW (50%)</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Telhados:</span>
+                            <span>38.800 instalações</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Investimento:</span>
+                            <span>R$ 3,2 bilhões</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>ROI:</span>
+                            <span>25% ao ano</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Beneficiários:</span>
+                            <span>125.000 famílias</span>
+                        </div>
                     </div>
-                    <div class="phase-metric">
-                        <span>Investimento:</span>
-                        <span>R$ 640 milhões</span>
+                    
+                    <div class="phase-card">
+                        <div class="phase-title">Fase 3 (2030-2033) - Consolidação</div>
+                        <div class="phase-metric">
+                            <span>Capacidade:</span>
+                            <span>1.280 MW (100%)</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Telhados:</span>
+                            <span>77.600 instalações</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Investimento:</span>
+                            <span>R$ 6,4 bilhões</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>ROI:</span>
+                            <span>30% ao ano</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Impacto PIB:</span>
+                            <span>+R$ 35.000/hab</span>
+                        </div>
                     </div>
-                    <div class="phase-metric">
-                        <span>ROI:</span>
-                        <span>25% ao ano</span>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Impacto Socioeconômico</h2>
+                <div class="chart-container">
+                    <canvas id="impactChart" width="400" height="200"></canvas>
+            <div class="nav-item">ESC
+                <div class="submenu">
+                    <a href="https://wawpuibt.manus.space/">Plataforma ESC</a>
+                </div>
+            </section>
+        </div>
+
+        <div id="treemap" class="tab-content">
+            <section class="section">
+                <h2 class="section-title">Mapa de Instalações e Excedentes</h2>
+                <div class="treemap-container" id="treemapContainer"></div>
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-value">280 GWh</div>
+                        <div class="kpi-label">Excedente Anual (100%)</div>
                     </div>
-                    <div class="phase-metric">
-                        <span>Payback:</span>
-                        <span>4 anos</span>
+                    <div class="kpi-card">
+                        <div class="kpi-value">R$ 42 Mi</div>
+                        <div class="kpi-label">Valor Excedente</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-value">R$ 150</div>
+                        <div class="kpi-label">Preço Médio/MWh</div>
+                    </div>
+            </div>
+            <div class="nav-item">InteLegis
+                <div class="submenu">
+                    <a href="https://www25.senado.leg.br/web/atividade/materias/-/materia/164831">REDATA</a>
+                    <a href="https://agenciabrasil.ebc.com.br/economia/noticia/2025-05/haddad-anuncia-que-pretende-acelerar-desoneracao-de-data-centers">REDATA_25/30_2T</a>
+                    <a href="https://claude.ai/public/artifacts/3cf19164-d0d5-44b2-aabd-368332dde7dd">REDATA KIDS</a>
+                    <a href="https://scoobiii.github.io/mex-DAO/">MEX DAO</a>
+                    <a href="https://3000-ipt3dcolgqg609yx8xz8f-e7a55fad.manusvm.computer/">Energia Social</a>
+                    <a href="https://claude.ai/public/artifacts/0c2f1ebb-d2dd-45e3-9063-e7c336838af7">MEX Inteligência</a>
+                    <a href="https://github.com/scoobiii/mex-dashboard/blob/main/projetos_lei_energia.pdf">PetaLegis</a>
+                    <a href="https://yemdxbhh.manus.space/">WorkShop 100% Mauá</a>
+                </div>
+            </section>
+        </div>
+            </div>
+            <div class="location-selector">
+                <select id="countrySelect" class="location-select">
+                    <option value="brazil">🇧🇷 Brasil</option>
+                    <option value="usa" disabled>🇺🇸 EUA (Em breve)</option>
+                </select>
+                <select id="citySelect" class="location-select">
+                    <option value="">Selecione uma cidade...</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+        <div id="economics" class="tab-content">
+            <section class="section">
+                <h2 class="section-title">Análise Econômica Detalhada</h2>
+                <div class="phases-grid">
+                    <div class="phase-card">
+                        <div class="phase-title">CAPEX por Fase</div>
+                        <div class="phase-metric">
+                            <span>Painéis Solares:</span>
+                            <span>60%</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Inversores:</span>
+                            <span>20%</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Instalação:</span>
+                            <span>15%</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Infraestrutura:</span>
+                            <span>5%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="phase-card">
+                        <div class="phase-title">OPEX Anual</div>
+                        <div class="phase-metric">
+                            <span>Manutenção:</span>
+                            <span>60%</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Operação:</span>
+                            <span>30%</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Seguros:</span>
+                            <span>10%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="phase-card">
+                        <div class="phase-title">PIB Per Capita Mauá</div>
+                        <div class="phase-metric">
+                            <span>Atual (2024):</span>
+                            <span>R$ 45.000</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Meta 2030:</span>
+                            <span>R$ 75.000 (+67%)</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Meta 2033:</span>
+                            <span>R$ 100.000 (+122%)</span>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="phase-card">
-                    <div class="phase-title">Fase 2 (2027-2030) - Expansão</div>
-                    <div class="phase-metric">
-                        <span>Capacidade:</span>
-                        <span>640 MW (50%)</span>
+                <div class="chart-container">
+                    <canvas id="economicsChart" width="400" height="200"></canvas>
+                </div>
+            </section>
+    <aside class="sidebar">
+        <div class="filter-section">
+            <div class="filter-title">📊 Categorias</div>
+            <div class="filter-grid">
+                <button class="filter-btn active" data-filter="all">🎯 Todos os Indicadores</button>
+                <button class="filter-btn" data-filter="energy">⚡ Energia & Emissões</button>
+                <button class="filter-btn" data-filter="social">👥 Indicadores Sociais</button>
+                <button class="filter-btn" data-filter="environment">🌱 Meio Ambiente</button>
+                <button class="filter-btn" data-filter="economy">💰 Economia Verde</button>
+                <button class="filter-btn" data-filter="worldbank">🏦 World Bank</button>
+            </div>
+        </div>
+
+        <div id="energy" class="tab-content">
+            <section class="section">
+                <h2 class="section-title">Matriz Energética Complementar</h2>
+                <div class="phases-grid">
+                    <div class="phase-card">
+                        <div class="phase-title">Geração Térmica Etanol</div>
+                        <div class="phase-metric">
+                            <span>Capacidade:</span>
+                            <span>400 MW</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Operação:</span>
+                            <span>18h-06h (noturno)</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Eficiência:</span>
+                            <span>42% --> 80% (trigeração) </span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Custo:</span>
+                            <span>R$ 200/MWh</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Investimento:</span>
+                            <span>R$ 800 milhões</span>
+                        </div>
                     </div>
-                    <div class="phase-metric">
-                        <span>Telhados:</span>
-                        <span>38.800 instalações</span>
+                    
+                    <div class="phase-card">
+                        <div class="phase-title">PCH - Hidrelétrica</div>
+                        <div class="phase-metric">
+                            <span>Capacidade:</span>
+                            <span>50 MW</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Operação:</span>
+                            <span>24h (base)</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Fator Capacidade:</span>
+                            <span>60%</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Geração Anual:</span>
+                            <span>262,8 GWh</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Investimento:</span>
+                            <span>R$ 250 milhões</span>
+                        </div>
                     </div>
-                    <div class="phase-metric">
-                        <span>Investimento:</span>
-                        <span>R$ 3,2 bilhões</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>ROI:</span>
-                        <span>25% ao ano</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Beneficiários:</span>
-                        <span>125.000 famílias</span>
+                    
+                    <div class="phase-card">
+                        <div class="phase-title">Armazenamento Baterias</div>
+                        <div class="phase-metric">
+                            <span>Capacidade:</span>
+                            <span>200 MWh</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Tecnologia:</span>
+                            <span>Li-ion</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Ciclos:</span>
+                            <span>6.000</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Vida Útil:</span>
+                            <span>15 anos</span>
+                        </div>
+                        <div class="phase-metric">
+                            <span>Investimento:</span>
+                            <span>R$ 400 milhões</span>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="phase-card">
-                    <div class="phase-title">Fase 3 (2030-2033) - Consolidação</div>
-                    <div class="phase-metric">
-                        <span>Capacidade:</span>
-                        <span>1.280 MW (100%)</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Telhados:</span>
-                        <span>77.600 instalações</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Investimento:</span>
-                        <span>R$ 6,4 bilhões</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>ROI:</span>
-                        <span>30% ao ano</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Impacto PIB:</span>
-                        <span>+R$ 35.000/hab</span>
-                    </div>
+                <div class="chart-container">
+                    <canvas id="energyMixChart" width="400" height="200"></canvas>
                 </div>
+            </section>
+        <div class="filter-section">
+            <div class="filter-title">🎨 Visualização</div>
+            <div class="filter-grid">
+                <button class="filter-btn active" data-view="meta">% da Meta Atingida</button>
+                <button class="filter-btn" data-view="gap">Gap vs Helsinki</button>
+                <button class="filter-btn" data-view="performance">Performance Atual</button>
             </div>
-        </section>
+        </div>
 
-        <section class="section">
-            <h2 class="section-title">Impacto Socioeconômico</h2>
-            <div class="chart-container">
-                <canvas id="impactChart" width="400" height="200"></canvas>
+        <div id="crypto" class="tab-content">
+            <section class="section">
+                <h2 class="section-title">Criptocontas por Instalação</h2>
+                <div id="cryptoAccounts"></div>
+            </section>
+        <div class="legend">
+            <div class="legend-title">Legenda de Cores</div>
+            <div class="legend-grid" style="grid-template-columns: 1fr;">
+                <div class="legend-item"><div class="legend-color" style="background: #22c55e;"></div><span>Meta Atingida (80%+)</span></div>
+                <div class="legend-item"><div class="legend-color" style="background: #3b82f6;"></div><span>Próximo (60-80%)</span></div>
+                <div class="legend-item"><div class="legend-color" style="background: #f59e0b;"></div><span>Moderado (40-60%)</span></div>
+                <div class="legend-item"><div class="legend-color" style="background: #ef4444;"></div><span>Crítico (&lt;40%)</span></div>
             </div>
-        </section>
-    </div>
+        </div>
+    </aside>
 
-    <div id="treemap" class="tab-content">
-        <section class="section">
-            <h2 class="section-title">Mapa de Instalações e Excedentes</h2>
-            <div class="treemap-container" id="treemapContainer"></div>
-            <div class="kpi-grid">
-                <div class="kpi-card">
-                    <div class="kpi-value">280 GWh</div>
-                    <div class="kpi-label">Excedente Anual (100%)</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-value">R$ 42 Mi</div>
-                    <div class="kpi-label">Valor Excedente</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-value">R$ 150</div>
-                    <div class="kpi-label">Preço Médio/MWh</div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <div id="economics" class="tab-content">
-        <section class="section">
-            <h2 class="section-title">Análise Econômica Detalhada</h2>
-            <div class="phases-grid">
-                <div class="phase-card">
-                    <div class="phase-title">CAPEX por Fase</div>
-                    <div class="phase-metric">
-                        <span>Painéis Solares:</span>
-                        <span>60%</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Inversores:</span>
-                        <span>20%</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Instalação:</span>
-                        <span>15%</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Infraestrutura:</span>
-                        <span>5%</span>
-                    </div>
-                </div>
-                
-                <div class="phase-card">
-                    <div class="phase-title">OPEX Anual</div>
-                    <div class="phase-metric">
-                        <span>Manutenção:</span>
-                        <span>60%</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Operação:</span>
-                        <span>30%</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Seguros:</span>
-                        <span>10%</span>
-                    </div>
-                </div>
-                
-                <div class="phase-card">
-                    <div class="phase-title">PIB Per Capita Mauá</div>
-                    <div class="phase-metric">
-                        <span>Atual (2024):</span>
-                        <span>R$ 45.000</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Meta 2030:</span>
-                        <span>R$ 75.000 (+67%)</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Meta 2033:</span>
-                        <span>R$ 100.000 (+122%)</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="chart-container">
-                <canvas id="economicsChart" width="400" height="200"></canvas>
-            </div>
-        </section>
-    </div>
-
-    <div id="energy" class="tab-content">
-        <section class="section">
-            <h2 class="section-title">Matriz Energética Complementar</h2>
-            <div class="phases-grid">
-                <div class="phase-card">
-                    <div class="phase-title">Geração Térmica Etanol</div>
-                    <div class="phase-metric">
-                        <span>Capacidade:</span>
-                        <span>400 MW</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Operação:</span>
-                        <span>18h-06h (noturno)</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Eficiência:</span>
-                        <span>42% --> 80% (trigeração) </span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Custo:</span>
-                        <span>R$ 200/MWh</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Investimento:</span>
-                        <span>R$ 800 milhões</span>
-                    </div>
-                </div>
-                
-                <div class="phase-card">
-                    <div class="phase-title">PCH - Hidrelétrica</div>
-                    <div class="phase-metric">
-                        <span>Capacidade:</span>
-                        <span>50 MW</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Operação:</span>
-                        <span>24h (base)</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Fator Capacidade:</span>
-                        <span>60%</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Geração Anual:</span>
-                        <span>262,8 GWh</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Investimento:</span>
-                        <span>R$ 250 milhões</span>
-                    </div>
-                </div>
-                
-                <div class="phase-card">
-                    <div class="phase-title">Armazenamento Baterias</div>
-                    <div class="phase-metric">
-                        <span>Capacidade:</span>
-                        <span>200 MWh</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Tecnologia:</span>
-                        <span>Li-ion</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Ciclos:</span>
-                        <span>6.000</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Vida Útil:</span>
-                        <span>15 anos</span>
-                    </div>
-                    <div class="phase-metric">
-                        <span>Investimento:</span>
-                        <span>R$ 400 milhões</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="chart-container">
-                <canvas id="energyMixChart" width="400" height="200"></canvas>
-            </div>
-        </section>
-    </div>
-
-    <div id="crypto" class="tab-content">
-        <section class="section">
-            <h2 class="section-title">Criptocontas por Instalação</h2>
-            <div id="cryptoAccounts"></div>
-        </section>
-    </div>
-
-    <div id="algorithm" class="tab-content">
-        <section class="section">
-            <h2 class="section-title">Algoritmo de Otimização Energética</h2>
-            <div class="algorithm-panel">
-                <h3>Deep Learning para Previsão Solar</h3>
-                <div class="code-block">
-                    <code>
-Otimizador de Energia Solar com IA
+        <div id="algorithm" class="tab-content">
+            <section class="section">
+                <h2 class="section-title">Algoritmo de Otimização Energética</h2>
+                <div class="algorithm-panel">
+                    <h3>Deep Learning para Previsão Solar</h3>
+                    <div class="code-block">
+                        <code>
+# Otimizador de Energia Solar com IA
 import tensorflow as tf
 import numpy as np
 import requests
 from datetime import datetime
+
 class MEXEnergyOptimizer:
-def init(self):
-self.model = self.build_lstm_model()
-self.ons_api = "http://ons-dl-prod-opendata-swagger.s3-website-us-east-1.amazonaws.com"
-code
-Code
-def build_lstm_model(self):
-    model = tf.keras.Sequential([
-        tf.keras.layers.LSTM(128, return_sequences=True, input_shape=(24, 10)),
-        tf.keras.layers.LSTM(64, return_sequences=True),
-        tf.keras.layers.LSTM(32),
-        tf.keras.layers.Dense(64, activation='relu'),
-        tf.keras.layers.Dropout(0.2),
-        tf.keras.layers.Dense(32, activation='relu'),
-        tf.keras.layers.Dense(1, activation='linear')
-    ])
-    model.compile(optimizer='adam', loss='mse', metrics=['mae'])
-    return model
-
-def predict_solar_generation(self, weather_data, historical_data):
-    # Previsão de geração solar baseada em:
-    # - Irradiância solar
-    # - Temperatura
-    # - Umidade
-    # - Velocidade do vento
-    # - Histórico de geração
-    
-    features = np.concatenate([weather_data, historical_data], axis=1)
-    prediction = self.model.predict(features)
-    return prediction * 1280  # Capacidade máxima em MW
-
-def optimize_energy_mix(self, solar_forecast, demand_forecast):
-    # Otimização da matriz energética
-    total_demand = np.sum(demand_forecast)
-    solar_generation = np.sum(solar_forecast)
-    
-    if solar_generation >= total_demand:
-        # Excedente para venda
-        excess = solar_generation - total_demand
-        thermal_needed = 0
-        hydro_needed = 0
-    else:
-        # Complementação necessária
-        shortage = total_demand - solar_generation
-        # Prioridade: Hidro (base) + Térmico (pico)
-        hydro_needed = min(shortage, 262.8)  # Capacidade PCH
-        thermal_needed = max(0, shortage - hydro_needed)
-    
-    return {
-        'solar_generation': solar_generation,
-        'excess_energy': excess if solar_generation >= total_demand else 0,
-        'thermal_needed': thermal_needed,
-        'hydro_needed': hydro_needed,
-        'total_cost': self.calculate_cost(thermal_needed, hydro_needed)
-    }
-
-def integrate_ons_data(self):
-    # Integração com dados do ONS
-    try:
-        demand_response = requests.get(f"{self.ons_api}/api/demanda")
-        price_response = requests.get(f"{self.ons_api}/api/precos")
+    def __init__(self):
+        self.model = self.build_lstm_model()
+        self.ons_api = "http://ons-dl-prod-opendata-swagger.s3-website-us-east-1.amazonaws.com"
         
-        if demand_response.status_code == 200:
-            demand_data = demand_response.json()
+    def build_lstm_model(self):
+        model = tf.keras.Sequential([
+            tf.keras.layers.LSTM(128, return_sequences=True, input_shape=(24, 10)),
+            tf.keras.layers.LSTM(64, return_sequences=True),
+            tf.keras.layers.LSTM(32),
+            tf.keras.layers.Dense(64, activation='relu'),
+            tf.keras.layers.Dropout(0.2),
+            tf.keras.layers.Dense(32, activation='relu'),
+            tf.keras.layers.Dense(1, activation='linear')
+        ])
+        model.compile(optimizer='adam', loss='mse', metrics=['mae'])
+        return model
+    
+    def predict_solar_generation(self, weather_data, historical_data):
+        # Previsão de geração solar baseada em:
+        # - Irradiância solar
+        # - Temperatura
+        # - Umidade
+        # - Velocidade do vento
+        # - Histórico de geração
+        
+        features = np.concatenate([weather_data, historical_data], axis=1)
+        prediction = self.model.predict(features)
+        return prediction * 1280  # Capacidade máxima em MW
+    
+    def optimize_energy_mix(self, solar_forecast, demand_forecast):
+        # Otimização da matriz energética
+        total_demand = np.sum(demand_forecast)
+        solar_generation = np.sum(solar_forecast)
+        
+        if solar_generation >= total_demand:
+            # Excedente para venda
+            excess = solar_generation - total_demand
+            thermal_needed = 0
+            hydro_needed = 0
         else:
-            demand_data = self.generate_synthetic_demand()
+            # Complementação necessária
+            shortage = total_demand - solar_generation
+            # Prioridade: Hidro (base) + Térmico (pico)
+            hydro_needed = min(shortage, 262.8)  # Capacidade PCH
+            thermal_needed = max(0, shortage - hydro_needed)
+        
+        return {
+            'solar_generation': solar_generation,
+            'excess_energy': excess if solar_generation >= total_demand else 0,
+            'thermal_needed': thermal_needed,
+            'hydro_needed': hydro_needed,
+            'total_cost': self.calculate_cost(thermal_needed, hydro_needed)
+        }
+    
+    def integrate_ons_data(self):
+        # Integração com dados do ONS
+        try:
+            demand_response = requests.get(f"{self.ons_api}/api/demanda")
+            price_response = requests.get(f"{self.ons_api}/api/precos")
             
-        if price_response.status_code == 200:
-            price_data = price_response.json()
-        else:
-            price_data = {'preco_medio': 150}  # R$/MWh
-            
-        return demand_data, price_data
-    except:
-        return self.generate_synthetic_demand(), {'preco_medio': 150}
+            if demand_response.status_code == 200:
+                demand_data = demand_response.json()
+            else:
+                demand_data = self.generate_synthetic_demand()
+                
+            if price_response.status_code == 200:
+                price_data = price_response.json()
+            else:
+                price_data = {'preco_medio': 150}  # R$/MWh
+                
+            return demand_data, price_data
+        except:
+            return self.generate_synthetic_demand(), {'preco_medio': 150}
+    
+    def calculate_revenue(self, excess_energy, market_price):
+        # Cálculo de receita com venda de excedente
+        return excess_energy * market_price * 0.99  # 1% taxa MEXX DAO
+    
+    def distribute_crypto_rewards(self, installations, total_revenue):
+        # Distribuição automática de recompensas em MEXX tokens
+        rewards = {}
+        for installation in installations:
+            contribution = installation['generation'] / sum(i['generation'] for i in installations)
+            rewards[installation['wallet']] = total_revenue * contribution
+        return rewards
 
-def calculate_revenue(self, excess_energy, market_price):
-    # Cálculo de receita com venda de excedente
-    return excess_energy * market_price * 0.99  # 1% taxa MEXX DAO
-
-def distribute_crypto_rewards(self, installations, total_revenue):
-    # Distribuição automática de recompensas em MEXX tokens
-    rewards = {}
-    for installation in installations:
-        contribution = installation['generation'] / sum(i['generation'] for i in installations)
-        rewards[installation['wallet']] = total_revenue * contribution
-    return rewards
-Exemplo de uso
+# Exemplo de uso
 optimizer = MEXEnergyOptimizer()
-weather_data = np.random.rand(1, 24, 6) # Dados meteorológicos
-historical_data = np.random.rand(1, 24, 4) # Dados históricos
+weather_data = np.random.rand(1, 24, 6)  # Dados meteorológicos
+historical_data = np.random.rand(1, 24, 4)  # Dados históricos
+
 solar_forecast = optimizer.predict_solar_generation(weather_data, historical_data)
-demand_forecast = np.random.rand(24) * 100 # Demanda horária
+demand_forecast = np.random.rand(24) * 100  # Demanda horária
+
 optimization = optimizer.optimize_energy_mix(solar_forecast, demand_forecast)
 print(f"Otimização: {optimization}")
-</code>
-</div>
-</div>
-</section>
-</div>
-</main>
-code
-Code
-<footer class="footer">
-    <div class="container">
-        <h3>MEX Energy DAO - Mauá Solar 2025-2033</h3>
-        <p>Transformando Mauá em referência nacional de sustentabilidade energética</p>
-        <p>Produção Owner: MEX Energia | Gang of Seven Senior Scrum teamp: GOS3</p>
+                        </code>
+                    </div>
+                </div>
+            </section>
+    <main class="main-content">
+        <div id="dashboard-view">
+            <div class="content-header">
+                <h1 class="content-title">Dashboard de Sustentabilidade</h1>
+                <p class="content-subtitle">Monitoramento em tempo real dos indicadores de Mauá (GDS-Index)</p>
+            </div>
+            <div class="metrics-overview">
+                <!-- Metric cards will be populated by script -->
+            </div>
+            <div class="treemap-container">
+                <h2 class="treemap-title">Treemap de Indicadores - Percentual da Meta Atingida</h2>
+                <div id="treemap" class="loading">Carregando dados...</div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <h3>MEX Energy DAO - Mauá Solar 2025-2033</h3>
+            <p>Transformando Mauá em referência nacional de sustentabilidade energética</p>
+            <p>Produção Owner: MEX Energia | Gang of Seven Senior Scrum teamp: GOS3</p>
+    <div class="tooltip" id="tooltip"></div>
+
+    <!-- Modal de Confirmação de Saída -->
+    <div id="external-link-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Você está saindo do site</h3>
+            </div>
+            <div class="modal-body">
+                <p>Você será redirecionado para o seguinte destino:</p>
+                <p id="modal-link-domain" class="modal-domain"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-cancel-btn" class="modal-btn-secondary">Cancelar</button>
+                <a id="modal-confirm-btn" href="#" target="_blank" rel="noopener noreferrer" class="modal-btn-primary">Continuar</a>
+            </div>
+        </div>
+    </footer>
     </div>
-</footer>
 
-<script>
-    // Floating elements animation
-    function createFloatingElements() {
-        const container = document.querySelector('.floating-elements');
-        for (let i = 0; i < 20; i++) {
-            const element = document.createElement('div');
-            element.className = 'floating-element';
-            element.style.left = Math.random() * 100 + '%';
-            element.style.animationDelay = Math.random() * 20 + 's';
-            element.style.animationDuration = (Math.random() * 10 + 15) + 's';
-            container.appendChild(element);
+    <script>
+        // Floating elements animation
+        function createFloatingElements() {
+            const container = document.querySelector('.floating-elements');
+            for (let i = 0; i < 20; i++) {
+                const element = document.createElement('div');
+                element.className = 'floating-element';
+                element.style.left = Math.random() * 100 + '%';
+                element.style.animationDelay = Math.random() * 20 + 's';
+                element.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                container.appendChild(element);
+    document.addEventListener('DOMContentLoaded', function () {
+        const mauaData = [
+            { name: "PIB per capita", category: "worldbank", current: 9258, target: 54000, unit: "USD", trend: "up", priority: "high" },
+            { name: "Consumo Energia", category: "worldbank", current: 2360, target: 4500, unit: "kWh", trend: "stable", priority: "medium" },
+            { name: "Energia Renovável", category: "energy", current: 45.2, target: 85, unit: "%", trend: "up", priority: "high" },
+            { name: "Eficiência Energética", category: "energy", current: 62.8, target: 90, unit: "%", trend: "up", priority: "high" },
+            { name: "Redução CO2", category: "energy", current: 38.4, target: 80, unit: "%", trend: "up", priority: "critical" },
+            { name: "Transporte Limpo", category: "energy", current: 34.6, target: 75, unit: "%", trend: "up", priority: "high" },
+            { name: "Eletricidade Verde", category: "energy", current: 78.9, target: 95, unit: "%", trend: "up", priority: "medium" },
+            { name: "Smart Grid", category: "energy", current: 25.3, target: 60, unit: "%", trend: "up", priority: "medium" },
+            { name: "Qualidade do Ar", category: "social", current: 56.7, target: 90, unit: "IQA", trend: "up", priority: "critical" },
+            { name: "Acesso à Água", category: "social", current: 89.3, target: 100, unit: "%", trend: "stable", priority: "high" },
+            { name: "Saneamento", category: "social", current: 67.5, target: 100, unit: "%", trend: "up", priority: "high" },
+            { name: "Educação Ambiental", category: "social", current: 71.2, target: 90, unit: "%", trend: "up", priority: "medium" },
+            { name: "Saúde Pública", category: "social", current: 73.8, target: 95, unit: "%", trend: "stable", priority: "high" },
+            { name: "Participação Cidadã", category: "social", current: 52.4, target: 80, unit: "%", trend: "up", priority: "medium" },
+            { name: "Inclusão Digital", category: "social", current: 64.7, target: 85, unit: "%", trend: "up", priority: "medium" },
+            { name: "Gestão de Resíduos", category: "environment", current: 58.9, target: 95, unit: "%", trend: "up", priority: "high" },
+            { name: "Biodiversidade", category: "environment", current: 41.7, target: 80, unit: "índice", trend: "down", priority: "critical" },
+            { name: "Cobertura Verde", category: "environment", current: 35.6, target: 60, unit: "%", trend: "up", priority: "high" },
+            { name: "Qualidade da Água", category: "environment", current: 64.3, target: 90, unit: "IQA", trend: "stable", priority: "high" },
+            { name: "Controle Poluição", category: "environment", current: 48.2, target: 85, unit: "%", trend: "up", priority: "high" },
+            { name: "Economia Circular", category: "environment", current: 32.1, target: 70, unit: "%", trend: "up", priority: "medium" },
+            { name: "Investimento Verde", category: "economy", current: 29.7, target: 60, unit: "%", trend: "up", priority: "high" },
+            { name: "Empregos Verdes", category: "economy", current: 15.4, target: 35, unit: "%", trend: "up", priority: "medium" },
+            { name: "Inovação Sustentável", category: "economy", current: 51.6, target: 80, unit: "índice", trend: "up", priority: "high" },
+            { name: "Startups Verdes", category: "economy", current: 23.8, target: 50, unit: "%", trend: "up", priority: "medium" },
+            { name: "Financiamento ESG", category: "economy", current: 18.5, target: 40, unit: "%", trend: "up", priority: "medium" }
+        ];
+
+        const brazilianCities = [
+            { name: "Mauá", state: "SP", region: "Grande São Paulo", active: true, population: 477781 },
+            { name: "São Paulo", state: "SP", region: "Grande São Paulo", active: false, population: 12396372 },
+            { name: "Santo André", state: "SP", region: "Grande São Paulo", active: false, population: 721368 }
+        ];
+
+        let currentData = JSON.parse(JSON.stringify(mauaData)); // Deep copy
+        let currentView = 'meta';
+        let currentFilter = 'all';
+
+        const calculateMetaPercentage = (current, target) => Math.min(100, (current / target) * 100);
+        const getColorByMeta = percentage => {
+            if (percentage >= 80) return '#22c55e'; if (percentage >= 60) return '#3b82f6';
+            if (percentage >= 40) return '#f59e0b'; return '#ef4444';
+        };
+
+        function populateCitySelector() {
+            const citySelect = document.getElementById('citySelect');
+            citySelect.innerHTML = '';
+            brazilianCities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city.name.toLowerCase().replace(/\s+/g, '-');
+                option.textContent = city.name;
+                option.disabled = !city.active;
+                if (city.name === 'Mauá') option.selected = true;
+                citySelect.appendChild(option);
+            });
         }
-    }
 
-    // Tab navigation
-    function showTab(tabName) {
-        // Hide all tabs
-        document.querySelectorAll('.tab-content').forEach(tab => {
-            tab.classList.remove('active');
-        });
-        
-        // Remove active class from all nav tabs
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.classList.remove('active');
-        });
-        
-        // Show selected tab
-        document.getElementById(tabName).classList.add('active');
-        
-        // Add active class to clicked nav tab
-        event.target.classList.add('active');
-        
-        // Initialize charts when needed
-        if (tabName === 'overview') {
-            initImpactChart();
-        } else if (tabName === 'treemap') {
-            initTreemap();
-        } else if (tabName === 'economics') {
-            initEconomicsChart();
-        } else if (tabName === 'energy') {
-            initEnergyMixChart();
-        } else if (tabName === 'crypto') {
-            initCryptoAccounts();
+        function updateMetricCards() {
+            const metricsContainer = document.querySelector('.metrics-overview');
+            const categories = {
+                'energy': { label: 'Energia & Emissões', icon: '⚡' },
+                'environment': { label: 'Gestão Ambiental', icon: '🌱' },
+                'social': { label: 'Indicadores Sociais', icon: '👥' },
+                'economy': { label: 'Economia Verde', icon: '💰' }
+            };
+            let html = '';
+            for (const cat in categories) {
+                const catData = currentData.filter(d => d.category === cat);
+                const avg = catData.length > 0 ? catData.reduce((acc, d) => acc + calculateMetaPercentage(d.current, d.target), 0) / catData.length : 0;
+                html += `
+                    <div class="metric-card">
+                        <div class="metric-icon">${categories[cat].icon}</div>
+                        <div class="metric-value">${avg.toFixed(1)}%</div>
+                        <div class="metric-label">${categories[cat].label}</div>
+                    </div>`;
+            }
+            metricsContainer.innerHTML = html;
         }
-    }
 
-    // Treemap data (replace with actual data from Python script)
-    const treemapData = {
-        "name": "Mauá Solar Installations",
-        "children": [
-            {"name": "0 — 5 kW", "value": 39747.5, "count": 15899},
-            {"name": "5 — 10 kW", "value": 184627.5, "count": 24617},
-            {"name": "10 — 15 kW", "value": 227275.0, "count": 18182},
-            {"name": "15 — 20 kW", "value": 147962.5, "count": 8455},
-            {"name": "20 — 25 kW", "value": 98100.0, "count": 4360},
-            {"name": "25 — 30 kW", "value": 54972.5, "count": 1999},
-            {"name": "30 — 35 kW", "value": 39390.0, "count": 1212},
-            {"name": "35 — 40 kW", "value": 23662.5, "count": 631},
-            {"name": "40 — 45 kW", "value": 16362.5, "count": 385},
-            {"name": "45 — 50 kW", "value": 9832.5, "count": 207}
-        ]
-    };
+        // Tab navigation
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+        const treemapContainer = document.getElementById('treemap');
+        const tooltip = d3.select('#tooltip');
+        let svg;
 
-    function initTreemap() {
-        const container = d3.select("#treemapContainer");
-        container.html(""); // Clear previous treemap
+        function updateTreemap() {
+            if (!treemapContainer) return;
+            treemapContainer.innerHTML = ''; // Clear previous
 
-        const width = container.node().clientWidth;
-        const height = container.node().clientHeight;
+            // Remove active class from all nav tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            const rect = treemapContainer.getBoundingClientRect();
+            const width = rect.width;
+            const height = 600;
 
-        const svg = container.append("svg")
-            .attr("width", width)
-            .attr("height", height)
-            .style("font", "10px sans-serif");
+            svg = d3.select('#treemap').append('svg').attr('width', width).attr('height', height);
 
-        // Finviz-inspired color scale (green for positive, red for negative, neutral for others)
-        const colorScale = d3.scaleSequential(d3.interpolateRdYlGn)
-            .domain([-1, 1]); // Assuming values can range from -1 to 1 for color intensity
+            const filteredData = currentFilter === 'all' ? currentData : currentData.filter(d => d.category === currentFilter);
+            const treeData = filteredData.map(d => {
+                const metaPercentage = calculateMetaPercentage(d.current, d.target);
+                let size = metaPercentage;
+                let displayValue = `${metaPercentage.toFixed(1)}%`;
+                if (currentView === 'gap') {
+                    const gap = Math.max(0, 92.43 - metaPercentage);
+                    size = gap + 10;
+                    displayValue = `${gap.toFixed(1)}%`;
+                } else if (currentView === 'performance') {
+                    size = d.current;
+                    displayValue = d.current.toFixed(1);
+                }
+                return { ...d, size: Math.max(5, size), displayValue, color: getColorByMeta(metaPercentage) };
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked nav tab
+            event.target.classList.add('active');
+            
+            // Initialize charts when needed
+            if (tabName === 'overview') {
+                initImpactChart();
+            } else if (tabName === 'treemap') {
+                initTreemap();
+            } else if (tabName === 'economics') {
+                initEconomicsChart();
+            } else if (tabName === 'energy') {
+                initEnergyMixChart();
+            } else if (tabName === 'crypto') {
+                initCryptoAccounts();
+            }
+        }
 
-        const treemap = d3.treemap()
-            .size([width, height])
-            .paddingInner(1) // Inner padding for cells
-            .paddingOuter(3); // Outer padding for the entire treemap
+        // Treemap data (replace with actual data from Python script)
+        const treemapData = {
+            "name": "Mauá Solar Installations",
+            "children": [
+                {"name": "0 — 5 kW", "value": 39747.5, "count": 15899},
+                {"name": "5 — 10 kW", "value": 184627.5, "count": 24617},
+                {"name": "10 — 15 kW", "value": 227275.0, "count": 18182},
+                {"name": "15 — 20 kW", "value": 147962.5, "count": 8455},
+                {"name": "20 — 25 kW", "value": 98100.0, "count": 4360},
+                {"name": "25 — 30 kW", "value": 54972.5, "count": 1999},
+                {"name": "30 — 35 kW", "value": 39390.0, "count": 1212},
+                {"name": "35 — 40 kW", "value": 23662.5, "count": 631},
+                {"name": "40 — 45 kW", "value": 16362.5, "count": 385},
+                {"name": "45 — 50 kW", "value": 9832.5, "count": 207}
+            ]
+        };
+            const root = d3.hierarchy({ children: treeData }).sum(d => d.size).sort((a, b) => b.value - a.value);
+            d3.treemap().size([width, height]).padding(3).round(true)(root);
 
-        const root = d3.hierarchy(treemapData)
-            .sum(d => d.value)
-            .sort((a, b) => b.value - a.value);
+            const cell = svg.selectAll('g').data(root.leaves()).enter().append('g')
+                .attr('transform', d => `translate(${d.x0},${d.y0})`);
 
-        treemap(root);
+        function initTreemap() {
+            const container = d3.select("#treemapContainer");
+            container.html(""); // Clear previous treemap
 
-        const cell = svg.selectAll("g")
-            .data(root.leaves())
-            .join("g")
-            .attr("transform", d => `translate(${d.x0},${d.y0})`);
+            const width = container.node().clientWidth;
+            const height = container.node().clientHeight;
 
-        cell.append("rect")
-            .attr("id", d => d.data.name.replace(/\s/g, "-"))
-            .attr("width", d => d.x1 - d.x0)
-            .attr("height", d => d.y1 - d.y0)
-            .attr("fill", d => {
-                // Example: Color based on value relative to total, or some other metric
-                // For now, using a simple gradient based on normalized value
-                const normalizedValue = d.value / root.value; // Normalize value between 0 and 1
-                return colorScale(normalizedValue * 2 - 1); // Map to -1 to 1 for color scale
-            })
-            .attr("stroke", "#333") // Dark border like Finviz
-            .attr("stroke-width", 0.5);
+            const svg = container.append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .style("font", "10px sans-serif");
 
-        cell.append("text")
-            .attr("x", 4)
-            .attr("y", 14)
-            .attr("fill", "white") // White text for contrast
-            .style("font-size", "10px")
-            .style("font-weight", "bold")
-            .text(d => d.data.name.split(' ')[0]); // Show only kW range
+            // Finviz-inspired color scale (green for positive, red for negative, neutral for others)
+            const colorScale = d3.scaleSequential(d3.interpolateRdYlGn)
+                .domain([-1, 1]); // Assuming values can range from -1 to 1 for color intensity
 
-        cell.append("text")
-            .attr("x", 4)
-            .attr("y", 28)
-            .attr("fill", "white")
-            .style("font-size", "9px")
-            .text(d => `${d3.format(",.0f")(d.data.count)} Inst.`); // Show count
+            const treemap = d3.treemap()
+                .size([width, height])
+                .paddingInner(1) // Inner padding for cells
+                .paddingOuter(3); // Outer padding for the entire treemap
 
-        cell.append("title")
-            .text(d => `${d.data.name}\n${d3.format(",.1f")(d.data.value)} kWp\n${d.data.count} Instalações`);
-    }
+            const root = d3.hierarchy(treemapData)
+                .sum(d => d.value)
+                .sort((a, b) => b.value - a.value);
 
-    // Initialize Crypto Accounts
-    function initCryptoAccounts() {
-        const cryptoAccountsDiv = document.getElementById('cryptoAccounts');
-        cryptoAccountsDiv.innerHTML = ''; // Clear previous content
+            treemap(root);
 
-        const installations = treemapData.children; // Using treemap data for installations
+            const cell = svg.selectAll("g")
+                .data(root.leaves())
+                .join("g")
+                .attr("transform", d => `translate(${d.x0},${d.y0})`);
 
-        installations.forEach((inst, index) => {
-            const walletAddress = `0x${Math.random().toString(16).substr(2, 40)}`;
-            const currentBalance = (Math.random() * 1000).toFixed(2);
-            const excessGenerated = (Math.random() * 500).toFixed(2);
-            const excessNegotiated = (Math.random() * 400).toFixed(2);
+            cell.append("rect")
+                .attr("id", d => d.data.name.replace(/\s/g, "-"))
+                .attr("width", d => d.x1 - d.x0)
+                .attr("height", d => d.y1 - d.y0)
+                .attr("fill", d => {
+                    // Example: Color based on value relative to total, or some other metric
+                    // For now, using a simple gradient based on normalized value
+                    const normalizedValue = d.value / root.value; // Normalize value between 0 and 1
+                    return colorScale(normalizedValue * 2 - 1); // Map to -1 to 1 for color scale
+            cell.append('rect')
+                .attr('width', d => d.x1 - d.x0).attr('height', d => d.y1 - d.y0)
+                .attr('fill', d => d.data.color).attr('class', 'treemap-rect')
+                .on('mouseover', (event, d) => {
+                    tooltip.style('display', 'block').html(`<strong>${d.data.name}</strong><br/>Valor: ${d.data.current.toFixed(1)} ${d.data.unit}<br/>Meta: ${d.data.target} ${d.data.unit}`);
+                })
+                .attr("stroke", "#333") // Dark border like Finviz
+                .attr("stroke-width", 0.5);
 
-            const cryptoCard = document.createElement('div');
-            cryptoCard.className = 'crypto-card';
-            cryptoCard.innerHTML = `
-                <div class="crypto-header">
-                    <h3>Instalação ${index + 1}: ${inst.name}</h3>
-                    <span class="crypto-address">${walletAddress}</span>
-                </div>
-                <div class="crypto-details">
-                    <p><strong>Saldo Atual:</strong> ${currentBalance} MEX</p>
-                    <p><strong>Excedente Gerado:</strong> ${excessGenerated} kWh</p>
-                    <p><strong>Excedente Negociado:</strong> ${excessNegotiated} kWh</p>
-                    <p><strong>Fluxo Energético:</strong> Origem: Rede, Destino: Blockchain</p>
-                    <p><strong>Fluxo Financeiro:</strong> Origem: Venda de Excedente, Destino: Carteira</p>
-                </div>
-            `;
-            cryptoAccountsDiv.appendChild(cryptoCard);
-        });
-    }
+            cell.append("text")
+                .attr("x", 4)
+                .attr("y", 14)
+                .attr("fill", "white") // White text for contrast
+                .style("font-size", "10px")
+                .style("font-weight", "bold")
+                .text(d => d.data.name.split(' ')[0]); // Show only kW range
 
-    // Initialize Charts
-    function initImpactChart() {
-        const ctx = document.getElementById('impactChart');
-        if (!ctx) return;
+            cell.append("text")
+                .attr("x", 4)
+                .attr("y", 28)
+                .attr("fill", "white")
+                .style("font-size", "9px")
+                .text(d => `${d3.format(",.0f")(d.data.count)} Inst.`); // Show count
+
+            cell.append("title")
+                .text(d => `${d.data.name}\n${d3.format(",.1f")(d.data.value)} kWp\n${d.data.count} Instalações`);
+                .on('mousemove', (event) => tooltip.style('left', (event.pageX + 15) + 'px').style('top', (event.pageY - 10) + 'px'))
+                .on('mouseout', () => tooltip.style('display', 'none'));
+
+            cell.append('text').attr('class', 'treemap-text').attr('x', 6).attr('y', 18)
+                .text(d => d.data.name.length > 15 ? d.data.name.substring(0,15)+'...' : d.data.name);
+
+            cell.append('text').attr('class', 'treemap-value').attr('x', 6).attr('y', 40)
+                .text(d => d.data.displayValue);
+        }
         
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['2025', '2027', '2030', '2033'],
-                datasets: [{
-                    label: 'Impacto no PIB Per Capita (R$)',
-                    data: [45000, 55000, 75000, 100000],
-                    borderColor: '#f97316',
-                    tension: 0.3,
-                    fill: false
-                }, {
-                    label: 'Consumo de Energia Per Capita (kWh)',
-                    data: [3000, 4000, 6000, 8000], // Exemplo
-                    borderColor: '#ea580c',
-                    tension: 0.3,
-                    fill: false
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
+        // --- LÓGICA DE NAVEGAÇÃO COM MODAL ---
+        const allNavItems = document.querySelectorAll('.nav-menu .nav-item');
+        const submenuLinks = document.querySelectorAll('.submenu a');
+        const modal = document.getElementById('external-link-modal');
+        const modalConfirmBtn = document.getElementById('modal-confirm-btn');
+        const modalCancelBtn = document.getElementById('modal-cancel-btn');
+        const modalLinkDomain = document.getElementById('modal-link-domain');
+
+        function closeModal() {
+            modal.classList.remove('visible');
+            setTimeout(() => { if (!modal.classList.contains('visible')) modal.style.display = 'none'; }, 300);
+        }
+
+        function openModal(url) {
+            try {
+                const domain = new URL(url).hostname;
+                modalLinkDomain.textContent = domain;
+                modalConfirmBtn.href = url;
+                modal.style.display = 'flex';
+                setTimeout(() => modal.classList.add('visible'), 10);
+            } catch (error) {
+                console.error("Invalid URL:", url);
+                window.open(url, '_blank', 'noopener,noreferrer');
+            }
+        }
+
+        // Initialize Crypto Accounts
+        function initCryptoAccounts() {
+            const cryptoAccountsDiv = document.getElementById('cryptoAccounts');
+            cryptoAccountsDiv.innerHTML = ''; // Clear previous content
+
+            const installations = treemapData.children; // Using treemap data for installations
+
+            installations.forEach((inst, index) => {
+                const walletAddress = `0x${Math.random().toString(16).substr(2, 40)}`;
+                const currentBalance = (Math.random() * 1000).toFixed(2);
+                const excessGenerated = (Math.random() * 500).toFixed(2);
+                const excessNegotiated = (Math.random() * 400).toFixed(2);
+
+                const cryptoCard = document.createElement('div');
+                cryptoCard.className = 'crypto-card';
+                cryptoCard.innerHTML = `
+                    <div class="crypto-header">
+                        <h3>Instalação ${index + 1}: ${inst.name}</h3>
+                        <span class="crypto-address">${walletAddress}</span>
+                    </div>
+                    <div class="crypto-details">
+                        <p><strong>Saldo Atual:</strong> ${currentBalance} MEX</p>
+                        <p><strong>Excedente Gerado:</strong> ${excessGenerated} kWh</p>
+                        <p><strong>Excedente Negociado:</strong> ${excessNegotiated} kWh</p>
+                        <p><strong>Fluxo Energético:</strong> Origem: Rede, Destino: Blockchain</p>
+                        <p><strong>Fluxo Financeiro:</strong> Origem: Venda de Excedente, Destino: Carteira</p>
+                    </div>
+                `;
+                cryptoAccountsDiv.appendChild(cryptoCard);
+            });
+        modalCancelBtn.addEventListener('click', closeModal);
+        modalConfirmBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
+        document.addEventListener('keydown', (event) => { if (event.key === "Escape" && modal.classList.contains('visible')) closeModal(); });
+        
+        function setActiveNavItem(navItem) {
+            allNavItems.forEach(item => item.classList.remove('active'));
+            if (navItem) navItem.classList.add('active');
+        }
+
+        // Initialize Charts
+        function initImpactChart() {
+            const ctx = document.getElementById('impactChart');
+            if (!ctx) return;
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['2025', '2027', '2030', '2033'],
+                    datasets: [{
+                        label: 'Impacto no PIB Per Capita (R$)',
+                        data: [45000, 55000, 75000, 100000],
+                        borderColor: '#f97316',
+                        tension: 0.3,
+                        fill: false
+                    }, {
+                        label: 'Consumo de Energia Per Capita (kWh)',
+                        data: [3000, 4000, 6000, 8000], // Exemplo
+                        borderColor: '#ea580c',
+                        tension: 0.3,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.8)'
+                            }
                         },
-                        ticks: {
-                            color: 'rgba(255, 255, 255, 0.8)'
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.8)'
+                            }
                         }
                     },
-                    x: {
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        ticks: {
-                            color: 'rgba(255, 255, 255, 0.8)'
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: 'rgba(255, 255, 255, 0.9)'
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'rgba(255, 255, 255, 0.9)'
+                            }
                         }
                     }
                 }
-            }
+        submenuLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                openModal(this.href);
+                setActiveNavItem(this.closest('.nav-item'));
+            });
+        }
         });
-    }
 
-    function initEconomicsChart() {
-        const ctx = document.getElementById('economicsChart');
-        if (!ctx) return;
+        function initEconomicsChart() {
+            const ctx = document.getElementById('economicsChart');
+            if (!ctx) return;
 
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['CAPEX', 'OPEX', 'ROI'],
-                datasets: [{
-                    label: 'Valores Econômicos',
-                    data: [6.4, 0.5, 30], // Exemplo em Bilhões/Milhões/%
-                    backgroundColor: ['#f97316', '#ea580c', '#fb923c'],
-                    borderColor: ['#f97316', '#ea580c', '#fb923c'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['CAPEX', 'OPEX', 'ROI'],
+                    datasets: [{
+                        label: 'Valores Econômicos',
+                        data: [6.4, 0.5, 30], // Exemplo em Bilhões/Milhões/%
+                        backgroundColor: ['#f97316', '#ea580c', '#fb923c'],
+                        borderColor: ['#f97316', '#ea580c', '#fb923c'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.8)'
+                            }
                         },
-                        ticks: {
-                            color: 'rgba(255, 255, 255, 0.8)'
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.8)'
+                            }
                         }
                     },
-                    x: {
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        ticks: {
-                            color: 'rgba(255, 255, 255, 0.8)'
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'rgba(255, 255, 255, 0.9)'
+                            }
                         }
                     }
+        allNavItems.forEach(item => {
+            item.addEventListener('click', function(event) {
+                if (event.target === this && this.firstChild.textContent.trim() === 'Dashboard') {
+                    setActiveNavItem(this);
+                }
+            });
+        }
+        });
+
+        // --- Event Listeners ---
+        document.querySelectorAll('[data-filter]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelector('[data-filter].active').classList.remove('active');
+                this.classList.add('active');
+                currentFilter = this.dataset.filter;
+                updateTreemap();
+            });
+        });
+
+        document.querySelectorAll('[data-view]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelector('[data-view].active').classList.remove('active');
+                this.classList.add('active');
+                currentView = this.dataset.view;
+                document.querySelector('.treemap-title').textContent = {
+                    'meta': 'Treemap de Indicadores - Percentual da Meta Atingida',
+                    'gap': 'Treemap de Indicadores - Gap vs Helsinki (92.43%)',
+                    'performance': 'Treemap de Indicadores - Performance Atual'
+                }[currentView];
+                updateTreemap();
+            });
+        });
+
+        function initEnergyMixChart() {
+            const ctx = document.getElementById('energyMixChart');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Solar', 'Térmica Etanol', 'Hidrelétrica', 'Armazenamento Baterias'],
+                    datasets: [{
+                        data: [60, 20, 10, 10], // Exemplo de proporções
+                        backgroundColor: ['#f97316', '#ea580c', '#fb923c', '#fed7aa'],
+                        borderColor: '#1e293b',
+                        borderWidth: 2
+                    }]
                 },
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: 'rgba(255, 255, 255, 0.9)'
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'rgba(255, 255, 255, 0.9)'
+                            }
                         }
                     }
                 }
-            }
-        });
-    }
+        window.addEventListener('resize', () => setTimeout(updateTreemap, 100));
 
-    function initEnergyMixChart() {
-        const ctx = document.getElementById('energyMixChart');
-        if (!ctx) return;
+        setInterval(() => {
+            currentData.forEach(item => {
+                const variation = (Math.random() - 0.5) * 0.3;
+                item.current = Math.max(0, Math.min(item.target * 1.2, item.current + variation));
+            });
+            updateMetricCards();
+            updateTreemap();
+        }, 6000);
 
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Solar', 'Térmica Etanol', 'Hidrelétrica', 'Armazenamento Baterias'],
-                datasets: [{
-                    data: [60, 20, 10, 10], // Exemplo de proporções
-                    backgroundColor: ['#f97316', '#ea580c', '#fb923c', '#fed7aa'],
-                    borderColor: '#1e293b',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: 'rgba(255, 255, 255, 0.9)'
-                        }
-                    }
-                }
-            }
-        });
-    }
+        // --- Inicialização ---
+        function initializeApp() {
+            populateCitySelector();
+            updateMetricCards();
+            updateTreemap();
+            console.log('🚀 MEX Energia: Dashboard initialized');
+        }
 
-    // Initial calls
-    createFloatingElements();
-    showTab('overview'); // Show overview tab by default
-</script>
+        // Initial calls
+        createFloatingElements();
+        showTab('overview'); // Show overview tab by default
+        initializeApp();
+    });
+    </script>
 </body>
 </html>
